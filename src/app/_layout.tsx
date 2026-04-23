@@ -1,16 +1,19 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import React from 'react';
-import { useColorScheme } from 'react-native';
+import { Stack } from 'expo-router';
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+export default function RootLayout() {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AnimatedSplashOverlay />
-      <AppTabs />
-    </ThemeProvider>
+    <Stack>
+      {/* Hide the header for the tabs, since tabs have their own headers */}
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      
+      {/* Configure the dynamic details screen */}
+      <Stack.Screen 
+        name="exercise/[id]" 
+        options={{ 
+          title: 'Exercise Details',
+          headerBackTitle: 'Back' 
+        }} 
+      />
+    </Stack>
   );
 }
