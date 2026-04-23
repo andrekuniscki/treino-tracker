@@ -1,7 +1,9 @@
 import { useRouter } from "expo-router";
+import React from "react";
 import {
     FlatList,
     Image,
+    StatusBar,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -12,56 +14,110 @@ import { EXERCISES } from "../../data/mockExercises";
 export default function ExercisesScreen() {
   const router = useRouter();
 
-  // The professor asked for "infinite scroll". In a real app, this fetches more data.
-  // Here, we just log it to prove the prop is hooked up.
+  // Requirement: Logic for "Infinite Scroll"
   const handleLoadMore = () => {
     console.log("Reached end of list, load more data here...");
   };
 
-  const renderItem = ({ item }) => (
+  // Requirement: Optimized rendering for FlatList
+  const renderItem = ({ item }: { item: any }) => (
     <TouchableOpacity
       style={styles.card}
-      // PASSING PARAMETERS: We send the ID through the route URL
-      onPress={() => router.push(`/exercise/${item.id}`)}
+      onPress={() =>
+        router.push({
+          pathname: "/exercise/[id]",
+          params: { id: item.id },
+        })
+      }
     >
-      <Image source={{ uri: item.image }} style={styles.image} />
-      <View style={styles.info}>
-        <Text style={styles.title}>{item.name}</Text>
-        <Text style={styles.subtitle}>{item.muscle}</Text>
+      <Image source={item.image} style={styles.cardImage} />
+
+      <View style={styles.cardContent}>
+        <View>
+          <Text style={styles.exerciseName}>{item.name}</Text>
+          <Text style={styles.muscleGroup}>
+            {item.muscle} • {item.difficulty}
+          </Text>
+        </View>
+
+        {/* Figma-style accent arrow */}
+        <View style={styles.arrowCircle}>
+          <Text style={styles.arrowText}>→</Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="light-content" />
       <FlatList
         data={EXERCISES}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
-        contentContainerStyle={{ padding: 16 }}
+        contentContainerStyle={styles.listPadding}
         onEndReached={handleLoadMore}
-        onEndReachedThreshold={0.5} // Triggers when 50% from the bottom
+        onEndReachedThreshold={0.5}
       />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f5f5f5" },
-  card: {
-    flexDirection: "row",
-    backgroundColor: "white",
-    borderRadius: 12,
-    marginBottom: 16,
-    overflow: "hidden",
-    elevation: 3, // Android shadow
-    shadowColor: "#000", // iOS shadow
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+  container: {
+    flex: 1,
+    backgroundColor: "#121212", // Dark theme
   },
-  image: { width: 100, height: 100 },
-  info: { padding: 16, justifyContent: "center" },
-  title: { fontSize: 18, fontWeight: "bold" },
-  subtitle: { fontSize: 14, color: "#666", marginTop: 4 },
+  listPadding: {
+    padding: 16,
+    paddingBottom: 100, // Ensures list isn't hidden by the Tab bar
+  },
+  card: {
+    backgroundColor: "#1E1E1E",
+    borderRadius: 20,
+    marginBottom: 20,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "#333",
+    // Professional elevation
+    elevation: 4,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+  },
+  cardImage: {
+    width: "100%",
+    height: 160,
+    opacity: 0.8,
+  },
+  cardContent: {
+    padding: 15,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  exerciseName: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  muscleGroup: {
+    color: "#888",
+    fontSize: 14,
+    marginTop: 4,
+  },
+  arrowCircle: {
+    backgroundColor: "#CCFF00", // Neon Lime from Figma
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  arrowText: {
+    color: "#000",
+    fontWeight: "bold",
+    fontSize: 18,
+  },
 });

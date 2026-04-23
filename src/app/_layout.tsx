@@ -1,19 +1,11 @@
+// src/app/_layout.tsx
 import { Stack } from 'expo-router';
 
-export default function RootLayout() {
+export default function Layout() {
   return (
     <Stack>
-      {/* Hide the header for the tabs, since tabs have their own headers */}
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      
-      {/* Configure the dynamic details screen */}
-      <Stack.Screen 
-        name="exercise/[id]" 
-        options={{ 
-          title: 'Exercise Details',
-          headerBackTitle: 'Back' 
-        }} 
-      />
+      <Stack.Screen name="exercise/[id]" options={{ title: 'Detalhes do Exercício' }} />
     </Stack>
   );
 }

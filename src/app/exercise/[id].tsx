@@ -1,49 +1,99 @@
-import { Stack, useLocalSearchParams } from "expo-router";
-import { Alert, Button, Image, StyleSheet, Text, View } from "react-native";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { ArrowLeft, Info } from "lucide-react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { EXERCISES } from "../../data/mockExercises";
 
-export default function ExerciseDetailsScreen() {
-  // RECEIVING PARAMETERS
+export default function Details() {
   const { id } = useLocalSearchParams();
-
-  // Find the specific exercise based on the ID
+  const router = useRouter();
   const exercise = EXERCISES.find((ex) => ex.id === id);
 
-  if (!exercise) {
-    return <Text style={styles.error}>Exercise not found.</Text>;
-  }
+  if (!exercise) return <Text>Exercício não encontrado</Text>;
 
   return (
-    <View style={styles.container}>
-      {/* Dynamic Header override based on the item */}
-      <Stack.Screen options={{ title: exercise.name }} />
+    <ScrollView style={styles.container}>
+      <Stack.Screen options={{ headerShown: false }} />
 
-      <Image source={{ uri: exercise.image }} style={styles.image} />
+      <Image source={exercise.image} style={styles.headerImage} />
 
-      <View style={styles.content}>
+      <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+        <ArrowLeft color="#fff" size={24} />
+      </TouchableOpacity>
+
+      <View style={styles.detailsBox}>
+        <Text style={styles.category}>{exercise.muscle}</Text>
         <Text style={styles.title}>{exercise.name}</Text>
-        <Text style={styles.detail}>Primary Muscle: {exercise.muscle}</Text>
-        <Text style={styles.detail}>Difficulty: {exercise.difficulty}</Text>
 
-        <View style={styles.buttonContainer}>
-          <Button
-            title="Add to Workout"
-            onPress={() =>
-              Alert.alert("Success", `${exercise.name} added to your workout!`)
-            }
-          />
+        <View style={styles.infoRow}>
+          <Info color="#CCFF00" size={20} />
+          <Text style={styles.description}>
+            Este exercício foca no fortalecimento do{" "}
+            {exercise.muscle.toLowerCase()}. Mantenha a postura ereta e controle
+            a respiração durante a execução.
+          </Text>
         </View>
+
+        <TouchableOpacity style={styles.actionButton}>
+          <Text style={styles.actionText}>Adicionar ao Treino Hoje</Text>
+        </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "white" },
-  image: { width: "100%", height: 250 },
-  content: { padding: 20 },
-  title: { fontSize: 28, fontWeight: "bold", marginBottom: 10 },
-  detail: { fontSize: 18, color: "#444", marginBottom: 8 },
-  buttonContainer: { marginTop: 30 },
-  error: { flex: 1, textAlign: "center", marginTop: 50, fontSize: 18 },
+  container: { flex: 1, backgroundColor: "#000" },
+  headerImage: { width: "100%", height: 400 },
+  detailsBox: {
+    marginTop: -40,
+    backgroundColor: "#121212",
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    padding: 30,
+    minHeight: 500,
+  },
+  category: {
+    color: "#CCFF00",
+    fontWeight: "bold",
+    letterSpacing: 1,
+    textTransform: "uppercase",
+  },
+  title: {
+    color: "#fff",
+    fontSize: 32,
+    fontWeight: "bold",
+    marginVertical: 10,
+  },
+  infoRow: {
+    flexDirection: "row",
+    gap: 10,
+    marginTop: 20,
+    backgroundColor: "#1E1E1E",
+    padding: 15,
+    borderRadius: 15,
+  },
+  description: { color: "#ccc", flex: 1, lineHeight: 22 },
+  actionButton: {
+    backgroundColor: "#CCFF00",
+    padding: 20,
+    borderRadius: 20,
+    marginTop: 40,
+    alignItems: "center",
+  },
+  actionText: { fontWeight: "bold", fontSize: 16 },
+  backButton: {
+    position: "absolute",
+    top: 50,
+    left: 20,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    padding: 10,
+    borderRadius: 20,
+  },
 });
