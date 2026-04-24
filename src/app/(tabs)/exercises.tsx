@@ -1,51 +1,39 @@
 import { useRouter } from "expo-router";
-import React from "react";
-import {
-    FlatList,
-    Image,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
+import React, { useCallback } from "react";
+import { FlatList, StatusBar, StyleSheet, View } from "react-native";
+import { ExerciseCard } from "../../components/exercise-card";
 import { EXERCISES } from "../../data/mockExercises";
 
+/**
+ * Tela de listagem de exercícios com FlatList otimizado
+ * Exibe 10+ exercícios com navegação para detalhes
+ */
 export default function ExercisesScreen() {
   const router = useRouter();
 
-  // Requirement: Logic for "Infinite Scroll"
-  const handleLoadMore = () => {
+  /**
+   * Callback para infinite scroll (scroll infinito)
+   * Chamado quando o usuário chega ao final da lista
+   */
+  const handleLoadMore = useCallback(() => {
     console.log("Reached end of list, load more data here...");
-  };
+  }, []);
 
-  // Requirement: Optimized rendering for FlatList
-  const renderItem = ({ item }: { item: any }) => (
-    <TouchableOpacity
-      style={styles.card}
-      onPress={() =>
-        router.push({
-          pathname: "/exercise/[id]",
-          params: { id: item.id },
-        })
-      }
-    >
-      <Image source={item.image} style={styles.cardImage} />
-
-      <View style={styles.cardContent}>
-        <View>
-          <Text style={styles.exerciseName}>{item.name}</Text>
-          <Text style={styles.muscleGroup}>
-            {item.muscle} • {item.difficulty}
-          </Text>
-        </View>
-
-        {/* Figma-style accent arrow */}
-        <View style={styles.arrowCircle}>
-          <Text style={styles.arrowText}>→</Text>
-        </View>
-      </View>
-    </TouchableOpacity>
+  /**
+   * Renderiza cada item da lista usando o componente reutilizável
+   * Otimizado com useCallback para melhor performance
+   */
+  const renderItem = useCallback(
+    ({ item }: { item: any }) => (
+      <ExerciseCard
+        id={item.id}
+        name={item.name}
+        muscle={item.muscle}
+        difficulty={item.difficulty}
+        image={item.image}
+      />
+    ),
+    [],
   );
 
   return (
@@ -58,6 +46,8 @@ export default function ExercisesScreen() {
         contentContainerStyle={styles.listPadding}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.5}
+        scrollIndicatorInsets={{ right: 1 }}
+        removeClippedSubviews={true}
       />
     </View>
   );
@@ -66,58 +56,10 @@ export default function ExercisesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#121212", // Dark theme
+    backgroundColor: "#f5f5f5",
   },
   listPadding: {
-    padding: 16,
-    paddingBottom: 100, // Ensures list isn't hidden by the Tab bar
-  },
-  card: {
-    backgroundColor: "#1E1E1E",
-    borderRadius: 20,
-    marginBottom: 20,
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: "#333",
-    // Professional elevation
-    elevation: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-  },
-  cardImage: {
-    width: "100%",
-    height: 160,
-    opacity: 0.8,
-  },
-  cardContent: {
-    padding: 15,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  exerciseName: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  muscleGroup: {
-    color: "#888",
-    fontSize: 14,
-    marginTop: 4,
-  },
-  arrowCircle: {
-    backgroundColor: "#CCFF00", // Neon Lime from Figma
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  arrowText: {
-    color: "#000",
-    fontWeight: "bold",
-    fontSize: 18,
+    padding: 12,
+    paddingBottom: 100,
   },
 });

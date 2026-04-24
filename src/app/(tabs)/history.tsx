@@ -1,11 +1,15 @@
 import { useRouter } from "expo-router";
+import { Play } from "lucide-react-native";
+import React, { useCallback } from "react";
 import {
+    Alert,
     FlatList,
     StyleSheet,
     Text,
     TouchableOpacity,
     View,
 } from "react-native";
+import { HistoryCard } from "../../components/history-card";
 
 const mockHistory = [
   {
@@ -38,54 +42,130 @@ const mockHistory = [
     exercises: ["Deadlift", "Afundo"],
     duration: "40 min",
   },
+  {
+    id: "6",
+    date: "2024-04-15",
+    exercises: ["Flexão", "Supino"],
+    duration: "28 min",
+  },
+  {
+    id: "7",
+    date: "2024-04-14",
+    exercises: ["Agachamento", "Afundo"],
+    duration: "32 min",
+  },
 ];
 
+/**
+ * Tela de histórico de treinos
+ * Exibe lista de treinos anteriores com data, exercícios e duração
+ */
 export default function HistoryScreen() {
   const router = useRouter();
 
-  const renderItem = ({ item }: { item: any }) => (
-    <TouchableOpacity style={styles.historyItem}>
-      <View>
-        <Text style={styles.date}>{item.date}</Text>
-        <Text style={styles.exercises}>{item.exercises.join(", ")}</Text>
-        <Text style={styles.duration}>{item.duration}</Text>
-      </View>
-    </TouchableOpacity>
+  /**
+   * Renderiza cada item do histórico usando o componente reutilizável
+   */
+  const renderItem = useCallback(
+    ({ item }: { item: any }) => (
+      <TouchableOpacity
+        onPress={() => handleWorkoutPress(item)}
+        activeOpacity={0.7}
+      >
+        <HistoryCard
+          date={item.date}
+          exercises={item.exercises}
+          duration={item.duration}
+        />
+      </TouchableOpacity>
+    ),
+    [],
   );
+
+  const handleWorkoutPress = (workout: any) => {
+    Alert.alert(
+      "Repetir Treino",
+      `Deseja repetir o treino de ${workout.date}?`,
+      [
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+        {
+          text: "Repetir",
+          onPress: () => router.push("/exercises"),
+          style: "default",
+        },
+      ],
+    );
+  };
+
+  const handleNewWorkout = () => {
+    router.push("/exercises");
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Histórico de Treinos</Text>
       <FlatList
         data={mockHistory}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         contentContainerStyle={styles.list}
+        ListHeaderComponent={
+          <View style={styles.header}>
+            <Text style={styles.title}>Histórico de Treinos</Text>
+            <TouchableOpacity
+              style={styles.newWorkoutButton}
+              onPress={handleNewWorkout}
+            >
+              <Play size={16} color="#f5f5f5" />
+              <Text style={styles.newWorkoutText}>Novo Treino</Text>
+            </TouchableOpacity>
+          </View>
+        }
+        scrollEnabled={true}
       />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f7fbff", padding: 20 },
+  container: {
+    flex: 1,
+    backgroundColor: "#f5f5f5",
+  },
+  header: {
+    width: "100%",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 16,
+    paddingHorizontal: 16,
+  },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#0a7ea4",
-    marginBottom: 20,
+    color: "#323131",
+    textAlign: "center",
+    marginBottom: 12,
   },
-  list: { paddingBottom: 20 },
-  historyItem: {
-    backgroundColor: "#fff",
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 10,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
+  newWorkoutButton: {
+    backgroundColor: "#da291c",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 18,
+    paddingVertical: 12,
+    borderRadius: 24,
+    gap: 8,
   },
-  date: { fontSize: 16, fontWeight: "bold", color: "#0a7ea4" },
-  exercises: { fontSize: 14, color: "#666", marginTop: 5 },
-  duration: { fontSize: 12, color: "#999", marginTop: 5 },
+  newWorkoutText: {
+    color: "#f5f5f5",
+    fontSize: 14,
+    fontWeight: "bold",
+  },
+  list: {
+    padding: 12,
+    paddingBottom: 100,
+  },
 });

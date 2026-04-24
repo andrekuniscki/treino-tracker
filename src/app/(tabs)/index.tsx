@@ -1,7 +1,6 @@
 import { useRouter } from "expo-router";
 import { Calendar, Dumbbell, Play, Target } from "lucide-react-native";
 import {
-  ImageBackground,
   ScrollView,
   StyleSheet,
   Text,
@@ -20,30 +19,23 @@ export default function Home() {
 
   return (
     <ScrollView style={styles.container}>
-      {/* Figma Style: Big Hero Image with Overlay */}
-      <ImageBackground
-        source={{
-          uri: "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=1000",
-        }}
-        style={styles.hero}
-      >
-        <View style={styles.overlay}>
-          <Text style={styles.brand}>
-            TREINO<Text style={styles.highlight}>TRACKER</Text>
-          </Text>
-          <Text style={styles.tagline}>
-            Acompanhe seu progresso e alcance seus objetivos.
-          </Text>
+      {/* Clean white header section */}
+      <View style={styles.header}>
+        <Text style={styles.brand}>
+          TREINO<Text style={styles.highlight}>TRACKER</Text>
+        </Text>
+        <Text style={styles.tagline}>
+          Acompanhe seu progresso e alcance seus objetivos.
+        </Text>
 
-          <TouchableOpacity
-            style={styles.mainButton}
-            onPress={() => router.push("/exercises")}
-          >
-            <Text style={styles.buttonText}>Começar Treino</Text>
-            <Play color="black" size={20} fill="black" />
-          </TouchableOpacity>
-        </View>
-      </ImageBackground>
+        <TouchableOpacity
+          style={styles.mainButton}
+          onPress={() => router.push("/exercises")}
+        >
+          <Text style={styles.buttonText}>Começar Treino</Text>
+          <Play color="#f5f5f5" size={20} />
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.categoriesSection}>
         <Text style={styles.sectionTitle}>Categorias</Text>
@@ -54,9 +46,9 @@ export default function Home() {
               <TouchableOpacity
                 key={category.id}
                 style={styles.categoryCard}
-                onPress={() => router.push(category.screen)}
+                onPress={() => router.push(category.screen as any)}
               >
-                <IconComponent color="#0a7ea4" size={32} />
+                <IconComponent color="#da291c" size={32} />
                 <Text style={styles.categoryText}>{category.name}</Text>
               </TouchableOpacity>
             );
@@ -68,54 +60,71 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#000" },
-  hero: { flex: 1, justifyContent: "flex-end" },
-  overlay: {
+  container: { flex: 1, backgroundColor: "#f5f5f5" },
+  header: {
+    backgroundColor: "#f5f5f5",
     padding: 30,
-    backgroundColor: "rgba(0,0,0,0.6)",
-    paddingBottom: 100,
+    paddingTop: 60,
+    alignItems: "center",
   },
-  brand: { color: "#fff", fontSize: 32, fontWeight: "900", letterSpacing: -1 },
-  highlight: { color: "#CCFF00" }, // Neon Lime Green from many fitness Figmas
-  tagline: { color: "#ccc", fontSize: 16, marginTop: 10, marginBottom: 30 },
+  brand: {
+    color: "#323131",
+    fontSize: 32,
+    fontWeight: "900",
+    letterSpacing: -1,
+  },
+  highlight: { color: "#323131" },
+  tagline: {
+    color: "#323131",
+    fontSize: 16,
+    marginTop: 10,
+    marginBottom: 30,
+    textAlign: "center",
+  },
   mainButton: {
-    backgroundColor: "#CCFF00",
-    flexDirection: "row",
-    padding: 20,
+    backgroundColor: "#da291c",
+    flexDirection: "column",
+    padding: 16,
     borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",
-    gap: 10,
+    gap: 8,
+    width: "100%",
+    maxWidth: 280,
   },
-  buttonText: { fontWeight: "bold", fontSize: 18 },
-  categoriesSection: { padding: 20, backgroundColor: "#f7fbff" },
+  buttonText: { color: "#f5f5f5", fontWeight: "bold", fontSize: 18 },
+  categoriesSection: {
+    padding: 20,
+    backgroundColor: "#f5f5f5",
+    alignItems: "center",
+  },
   sectionTitle: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#0a7ea4",
+    color: "#323131",
     marginBottom: 20,
   },
   categoriesGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
+    flexDirection: "column",
+    width: "100%",
+    maxWidth: 300,
   },
   categoryCard: {
     backgroundColor: "#fff",
-    width: "30%",
-    padding: 20,
-    borderRadius: 15,
+    width: "100%",
+    padding: 16,
+    borderRadius: 12,
     alignItems: "center",
-    marginBottom: 15,
+    marginBottom: 12,
     shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    elevation: 2,
   },
   categoryText: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#333",
+    color: "#323131",
     marginTop: 10,
     textAlign: "center",
   },

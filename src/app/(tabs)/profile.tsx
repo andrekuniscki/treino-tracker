@@ -1,7 +1,6 @@
 import { useRouter } from "expo-router";
 import {
-    Platform,
-    ProgressBarAndroid,
+    ScrollView,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -18,7 +17,10 @@ export default function ProfileScreen() {
   ];
 
   return (
-    <View style={styles.page}>
+    <ScrollView
+      style={styles.page}
+      contentContainerStyle={styles.scrollContent}
+    >
       <View style={styles.header}>
         <Text style={styles.title}>Meu Perfil</Text>
         <Text style={styles.subtitle}>
@@ -31,8 +33,12 @@ export default function ProfileScreen() {
           <Text style={styles.avatarText}>A</Text>
         </View>
         <View style={styles.infoRow}>
+          <Text style={styles.fieldLabel}>Tema</Text>
+          <Text style={styles.fieldValue}>Automático (Sistema)</Text>
+        </View>
+        <View style={styles.infoRow}>
           <Text style={styles.fieldLabel}>Aluno</Text>
-          <Text style={styles.fieldValue}>[Seu Nome]</Text>
+          <Text style={styles.fieldValue}>André Kuniscki</Text>
         </View>
         <View style={styles.infoRow}>
           <Text style={styles.fieldLabel}>Versão do App</Text>
@@ -48,143 +54,159 @@ export default function ProfileScreen() {
             <Text style={styles.goalValue}>
               {goal.current}/{goal.target}
             </Text>
-            {Platform.OS === "android" ? (
-              <ProgressBarAndroid
-                styleAttr="Horizontal"
-                indeterminate={false}
-                progress={goal.current / goal.target}
-                color="#0a7ea4"
+            <View style={styles.progressBar}>
+              <View
+                style={[
+                  styles.progressFill,
+                  { width: `${(goal.current / goal.target) * 100}%` },
+                ]}
               />
-            ) : (
-              <View style={styles.progressBar}>
-                <View
-                  style={[
-                    styles.progressFill,
-                    { width: `${(goal.current / goal.target) * 100}%` },
-                  ]}
-                />
-              </View>
-            )}
+            </View>
           </View>
         ))}
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={() => router.push("/")}>
-        <Text style={styles.buttonText}>Voltar ao Menu</Text>
+      <TouchableOpacity
+        style={styles.navigationButton}
+        onPress={() => router.push("/exercises")}
+      >
+        <Text style={styles.navigationButtonText}>Ver Exercícios</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    backgroundColor: "#f7fbff",
-    padding: 24,
-    justifyContent: "space-between",
+    backgroundColor: "#f5f5f5",
+  },
+  scrollContent: {
+    padding: 20,
+    alignItems: "center",
+    paddingBottom: 100,
   },
   header: {
-    marginTop: 24,
+    marginTop: 20,
+    alignItems: "center",
+    width: "100%",
   },
   title: {
     fontSize: 32,
     fontWeight: "800",
-    color: "#0a7ea4",
+    color: "#323131",
+    textAlign: "center",
   },
   subtitle: {
     marginTop: 8,
-    fontSize: 16,
-    color: "#5f6d7a",
-    lineHeight: 22,
+    fontSize: 14,
+    color: "#323131",
+    lineHeight: 20,
+    textAlign: "center",
   },
   card: {
     backgroundColor: "#ffffff",
-    borderRadius: 24,
-    padding: 24,
+    borderRadius: 16,
+    padding: 20,
     shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 20,
-    shadowOffset: { width: 0, height: 10 },
-    elevation: 6,
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 3,
+    width: "100%",
+    maxWidth: 320,
+    alignItems: "center",
+    marginVertical: 16,
   },
   avatarPlaceholder: {
-    width: 88,
-    height: 88,
-    borderRadius: 44,
-    backgroundColor: "#eaf5fb",
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: "#f5f5f5",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 24,
+    marginBottom: 16,
+    borderWidth: 2,
+    borderColor: "#da291c",
   },
   avatarText: {
     fontSize: 32,
-    color: "#0a7ea4",
+    color: "#da291c",
     fontWeight: "700",
   },
   infoRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: "column",
+    justifyContent: "center",
     alignItems: "center",
-    marginBottom: 18,
+    marginBottom: 12,
+    width: "100%",
   },
   fieldLabel: {
-    fontSize: 16,
-    color: "#7a8a99",
+    fontSize: 12,
+    color: "#666",
+    marginBottom: 4,
   },
   fieldValue: {
-    fontSize: 16,
-    color: "#1f3340",
+    fontSize: 14,
+    color: "#323131",
     fontWeight: "600",
-  },
-  button: {
-    backgroundColor: "#0a7ea4",
-    paddingVertical: 16,
-    borderRadius: 14,
-    alignItems: "center",
-    marginBottom: 24,
-  },
-  buttonText: {
-    color: "#ffffff",
-    fontSize: 16,
-    fontWeight: "700",
+    textAlign: "center",
   },
   goalsSection: {
     backgroundColor: "#ffffff",
-    borderRadius: 24,
-    padding: 24,
+    borderRadius: 16,
+    padding: 20,
     shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 20,
-    shadowOffset: { width: 0, height: 10 },
-    elevation: 6,
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 3,
+    width: "100%",
+    maxWidth: 320,
   },
   sectionTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "700",
-    color: "#0a7ea4",
-    marginBottom: 20,
+    color: "#323131",
+    marginBottom: 16,
+    textAlign: "center",
   },
   goalItem: {
-    marginBottom: 20,
+    marginBottom: 16,
   },
   goalLabel: {
-    fontSize: 16,
-    color: "#333",
-    marginBottom: 5,
+    fontSize: 14,
+    color: "#323131",
+    marginBottom: 4,
+    textAlign: "center",
   },
   goalValue: {
-    fontSize: 14,
+    fontSize: 12,
     color: "#666",
-    marginBottom: 10,
+    marginBottom: 8,
+    textAlign: "center",
   },
   progressBar: {
-    height: 8,
+    height: 6,
     backgroundColor: "#e0e0e0",
-    borderRadius: 4,
+    borderRadius: 3,
     overflow: "hidden",
   },
   progressFill: {
     height: "100%",
-    backgroundColor: "#0a7ea4",
+    backgroundColor: "#da291c",
+  },
+  navigationButton: {
+    backgroundColor: "#da291c",
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    borderRadius: 12,
+    marginTop: 20,
+    alignItems: "center",
+  },
+  navigationButtonText: {
+    color: "#f5f5f5",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });

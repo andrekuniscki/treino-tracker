@@ -1,4 +1,17 @@
-export const EXERCISES = [
+/**
+ * Base de dados mockada de exercícios para o app Treino-Tracker
+ * Contém 10 exercícios diferentes com informações de musculatura, dificuldade e imagens GIF
+ */
+
+interface Exercise {
+  id: string;
+  name: string;
+  muscle: string;
+  image: any;
+  difficulty: string;
+}
+
+export const EXERCISES: Exercise[] = [
   {
     id: "1",
     name: "Flexão",

@@ -1,6 +1,7 @@
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { ArrowLeft, Info } from "lucide-react-native";
 import {
+  Alert,
   Image,
   ScrollView,
   StyleSheet,
@@ -10,29 +11,74 @@ import {
 } from "react-native";
 import { EXERCISES } from "../../data/mockExercises";
 
+/**
+ * Tela de detalhes do exercício
+ * Exibe informações completas, imagem animada e opções de ação
+ */
 export default function Details() {
-  const { id } = useLocalSearchParams();
+  const params = useLocalSearchParams();
   const router = useRouter();
-  const exercise = EXERCISES.find((ex) => ex.id === id);
 
-  if (!exercise) return <Text>Exercício não encontrado</Text>;
+  // Validação e conversão de parâmetros
+  const exerciseId = Array.isArray(params.id) ? params.id[0] : params.id;
+
+  // Busca o exercício na lista baseado no ID passado por parâmetro
+  const exercise = EXERCISES.find((ex) => ex.id === exerciseId);
+
+  // Tratamento de erro: exercício não encontrado
+  if (!exercise) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>Exercício não encontrado</Text>
+        <TouchableOpacity
+          style={styles.backButtonError}
+          onPress={() => router.back()}
+        >
+          <Text style={styles.backButtonTextError}>Voltar</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  const handleAddToWorkout = () => {
+    Alert.alert("Sucesso!", `${exercise.name} foi adicionado ao seu treino.`, [
+      {
+        text: "Continuar",
+        style: "default",
+      },
+      {
+        text: "Ver Treino",
+        onPress: () => router.push("/exercises"),
+        style: "default",
+      },
+    ]);
+  };
 
   return (
     <ScrollView style={styles.container}>
-      <Stack.Screen options={{ headerShown: false }} />
+      <Stack.Screen
+        options={{
+          title: exercise.name,
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => router.back()}
+              style={{ marginLeft: 16, padding: 8 }}
+            >
+              <ArrowLeft size={24} color="#323131" />
+            </TouchableOpacity>
+          ),
+        }}
+      />
 
       <Image source={exercise.image} style={styles.headerImage} />
-
-      <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-        <ArrowLeft color="#fff" size={24} />
-      </TouchableOpacity>
 
       <View style={styles.detailsBox}>
         <Text style={styles.category}>{exercise.muscle}</Text>
         <Text style={styles.title}>{exercise.name}</Text>
 
+        {/* Card com informações do exercício */}
         <View style={styles.infoRow}>
-          <Info color="#CCFF00" size={20} />
+          <Info color="#da291c" size={20} />
           <Text style={styles.description}>
             Este exercício foca no fortalecimento do{" "}
             {exercise.muscle.toLowerCase()}. Mantenha a postura ereta e controle
@@ -40,8 +86,12 @@ export default function Details() {
           </Text>
         </View>
 
-        <TouchableOpacity style={styles.actionButton}>
-          <Text style={styles.actionText}>Adicionar ao Treino Hoje</Text>
+        {/* Botão de ação: adicionar ao treino */}
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={handleAddToWorkout}
+        >
+          <Text style={styles.actionText}>Adicionar ao Treino</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -49,24 +99,24 @@ export default function Details() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#000" },
+  container: { flex: 1, backgroundColor: "#f5f5f5" },
   headerImage: { width: "100%", height: 400 },
   detailsBox: {
     marginTop: -40,
-    backgroundColor: "#121212",
+    backgroundColor: "#f5f5f5",
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     padding: 30,
     minHeight: 500,
   },
   category: {
-    color: "#CCFF00",
+    color: "#323131",
     fontWeight: "bold",
     letterSpacing: 1,
     textTransform: "uppercase",
   },
   title: {
-    color: "#fff",
+    color: "#323131",
     fontSize: 32,
     fontWeight: "bold",
     marginVertical: 10,
@@ -75,25 +125,40 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 10,
     marginTop: 20,
-    backgroundColor: "#1E1E1E",
+    backgroundColor: "#fff",
     padding: 15,
     borderRadius: 15,
   },
-  description: { color: "#ccc", flex: 1, lineHeight: 22 },
+  description: { color: "#323131", flex: 1, lineHeight: 22 },
   actionButton: {
-    backgroundColor: "#CCFF00",
-    padding: 20,
-    borderRadius: 20,
-    marginTop: 40,
+    backgroundColor: "#da291c",
+    padding: 14,
+    borderRadius: 12,
+    marginTop: 30,
+    alignItems: "center",
+    width: "80%",
+    alignSelf: "center",
+  },
+  actionText: { color: "#f5f5f5", fontWeight: "bold", fontSize: 14 },
+  errorContainer: {
+    flex: 1,
+    backgroundColor: "#f5f5f5",
+    justifyContent: "center",
     alignItems: "center",
   },
-  actionText: { fontWeight: "bold", fontSize: 16 },
-  backButton: {
-    position: "absolute",
-    top: 50,
-    left: 20,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    padding: 10,
+  errorText: {
+    color: "#323131",
+    fontSize: 18,
+    marginBottom: 20,
+  },
+  backButtonError: {
+    backgroundColor: "#da291c",
+    paddingHorizontal: 30,
+    paddingVertical: 12,
     borderRadius: 20,
+  },
+  backButtonTextError: {
+    color: "#f5f5f5",
+    fontWeight: "bold",
   },
 });
