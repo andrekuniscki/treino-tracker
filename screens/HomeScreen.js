@@ -1,4 +1,3 @@
-import { useRouter } from "expo-router";
 import { Calendar, Dumbbell, Play, Target } from "lucide-react-native";
 import {
   ScrollView,
@@ -8,13 +7,11 @@ import {
   View,
 } from "react-native";
 
-export default function Home() {
-  const router = useRouter();
-
+export default function HomeScreen({ navigation }) {
   const categories = [
-    { id: "1", name: "Treino Completo", icon: Dumbbell, screen: "/exercises" },
-    { id: "2", name: "Metas", icon: Target, screen: "/profile" },
-    { id: "3", name: "Histórico", icon: Calendar, screen: "/history" },
+    { id: "1", name: "Treino Completo", icon: Dumbbell, screen: "ListScreen" },
+    { id: "2", name: "Metas", icon: Target, screen: "ProfileScreen" },
+    { id: "3", name: "Histórico", icon: Calendar, screen: "ProfileScreen" }, // Ajustar se houver tela de histórico
   ];
 
   return (
@@ -30,7 +27,7 @@ export default function Home() {
 
         <TouchableOpacity
           style={styles.mainButton}
-          onPress={() => router.push("/exercises")}
+          onPress={() => navigation.navigate("ListScreen")}
         >
           <Text style={styles.buttonText}>Começar Treino</Text>
           <Play color="#f5f5f5" size={20} />
@@ -46,7 +43,7 @@ export default function Home() {
               <TouchableOpacity
                 key={category.id}
                 style={styles.categoryCard}
-                onPress={() => router.push(category.screen as any)}
+                onPress={() => navigation.navigate(category.screen)}
               >
                 <IconComponent color="#da291c" size={32} />
                 <Text style={styles.categoryText}>{category.name}</Text>

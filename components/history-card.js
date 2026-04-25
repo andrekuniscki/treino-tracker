@@ -1,17 +1,11 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
-interface HistoryCardProps {
-  date: string;
-  exercises: string[];
-  duration: string;
-}
-
 /**
  * Mapeia nomes de exercícios para seus respectivos GIFs
  */
-const getExerciseGif = (exerciseName: string) => {
-  const gifMap: { [key: string]: any } = {
+const getExerciseGif = (exerciseName) => {
+  const gifMap = {
     Flexão: require("../../assets/images/flexao.gif"),
     Agachamento: require("../../assets/images/agachamento.gif"),
     Barra: require("../../assets/images/barra.gif"),
@@ -31,7 +25,7 @@ const getExerciseGif = (exerciseName: string) => {
  * Componente reutilizável para exibir um card de histórico de treino
  * @param props - Dados do treino
  */
-export function HistoryCard({ date, exercises, duration }: HistoryCardProps) {
+export function HistoryCard({ date, exercises, duration }) {
   // Pega o primeiro exercício para mostrar o GIF
   const primaryExercise = exercises[0];
   const exerciseGif = getExerciseGif(primaryExercise);

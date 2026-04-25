@@ -1,5 +1,3 @@
-import { useRouter } from "expo-router";
-import React from "react";
 import {
     Alert,
     Image,
@@ -9,46 +7,14 @@ import {
     View,
 } from "react-native";
 
-interface ExerciseCardProps {
-  id: string;
-  name: string;
-  muscle: string;
-  difficulty: string;
-  image: any;
-}
-
-/**
- * Componente reutilizável para exibir um card de exercício na listagem
- * @param props - Dados do exercício
- */
-export function ExerciseCard({
-  id,
-  name,
-  muscle,
-  difficulty,
-  image,
-}: ExerciseCardProps) {
-  const router = useRouter();
-
+export default function Card({ id, name, muscle, difficulty, image, onPress }) {
   const handlePress = () => {
-    try {
-      if (!id) {
-        Alert.alert("Erro", "ID do exercício não encontrado");
-        return;
+    if (onPress) {
+      try {
+        onPress(id, name, muscle, difficulty);
+      } catch (error) {
+        Alert.alert("Erro", "Não foi possível abrir os detalhes do exercício");
       }
-
-      router.push({
-        pathname: "/exercise/[id]",
-        params: {
-          id: id.toString(),
-          name,
-          muscle,
-          difficulty,
-        },
-      });
-    } catch (error) {
-      console.error("Erro na navegação:", error);
-      Alert.alert("Erro", "Não foi possível abrir os detalhes do exercício");
     }
   };
 

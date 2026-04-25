@@ -1,15 +1,12 @@
-import { useRouter } from "expo-router";
 import {
     ScrollView,
     StyleSheet,
     Text,
-    TouchableOpacity,
-    View,
+    View
 } from "react-native";
+import Button from "../components/Button";
 
-export default function ProfileScreen() {
-  const router = useRouter();
-
+export default function ProfileScreen({ navigation }) {
   const goals = [
     { label: "Treinos por Semana", current: 4, target: 5 },
     { label: "Exercícios Concluídos", current: 25, target: 30 },
@@ -66,12 +63,11 @@ export default function ProfileScreen() {
         ))}
       </View>
 
-      <TouchableOpacity
+      <Button
+        title="Ver Exercícios"
+        onPress={() => navigation.navigate("ListScreen")}
         style={styles.navigationButton}
-        onPress={() => router.push("/exercises")}
-      >
-        <Text style={styles.navigationButtonText}>Ver Exercícios</Text>
-      </TouchableOpacity>
+      />
     </ScrollView>
   );
 }
@@ -197,16 +193,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#da291c",
   },
   navigationButton: {
-    backgroundColor: "#da291c",
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    borderRadius: 12,
     marginTop: 20,
-    alignItems: "center",
-  },
-  navigationButtonText: {
-    color: "#f5f5f5",
-    fontSize: 16,
-    fontWeight: "bold",
+    width: "100%",
+    maxWidth: 320,
   },
 });

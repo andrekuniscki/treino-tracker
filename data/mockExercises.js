@@ -3,83 +3,75 @@
  * Contém 10 exercícios diferentes com informações de musculatura, dificuldade e imagens GIF
  */
 
-interface Exercise {
-  id: string;
-  name: string;
-  muscle: string;
-  image: any;
-  difficulty: string;
-}
-
-export const EXERCISES: Exercise[] = [
+export const EXERCISES = [
   {
     id: "1",
     name: "Flexão",
     muscle: "Peito",
-    image: require("../../assets/images/flexao.gif"),
+    image: require("../assets/images/flexao.gif"),
     difficulty: "Iniciante",
   },
   {
     id: "2",
     name: "Agachamento",
     muscle: "Pernas",
-    image: require("../../assets/images/agachamento.gif"),
+    image: require("../assets/images/agachamento.gif"),
     difficulty: "Iniciante",
   },
   {
     id: "3",
     name: "Barra",
     muscle: "Costas",
-    image: require("../../assets/images/barra.gif"),
+    image: require("../assets/images/barra.gif"),
     difficulty: "Intermediário",
   },
   {
     id: "4",
     name: "Deadlift",
     muscle: "Costas/Pernas",
-    image: require("../../assets/images/deadlift.gif"),
+    image: require("../assets/images/deadlift.gif"),
     difficulty: "Avançado",
   },
   {
     id: "5",
     name: "Supino",
     muscle: "Peito",
-    image: require("../../assets/images/supino.gif"),
+    image: require("../assets/images/supino.gif"),
     difficulty: "Intermediário",
   },
   {
     id: "6",
     name: "Afundo com Halteres",
     muscle: "Pernas",
-    image: require("../../assets/images/afundo-com-halteres.gif"),
+    image: require("../assets/images/afundo-com-halteres.gif"),
     difficulty: "Iniciante",
   },
   {
     id: "7",
     name: "Prancha",
     muscle: "Núcleo",
-    image: require("../../assets/images/prancha.gif"),
+    image: require("../assets/images/prancha.gif"),
     difficulty: "Iniciante",
   },
   {
     id: "8",
     name: "Rosca",
     muscle: "Braços",
-    image: require("../../assets/images/rosca.gif"),
+    image: require("../assets/images/rosca.gif"),
     difficulty: "Iniciante",
   },
   {
     id: "9",
     name: "Tríceps",
     muscle: "Braços",
-    image: require("../../assets/images/tríceps.gif"),
+    image: require("../assets/images/tríceps.gif"),
     difficulty: "Intermediário",
   },
   {
     id: "10",
     name: "Ombro",
     muscle: "Ombros",
-    image: require("../../assets/images/ombro.gif"),
+    image: require("../assets/images/ombro.gif"),
     difficulty: "Intermediário",
   },
 ];

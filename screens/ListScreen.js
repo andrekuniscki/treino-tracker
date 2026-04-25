@@ -1,16 +1,13 @@
-import { useRouter } from "expo-router";
 import React, { useCallback } from "react";
 import { FlatList, StatusBar, StyleSheet, View } from "react-native";
-import { ExerciseCard } from "../../components/exercise-card";
-import { EXERCISES } from "../../data/mockExercises";
+import { ExerciseCard } from "../components/exercise-card";
+import { EXERCISES } from "../data/mockExercises";
 
 /**
  * Tela de listagem de exercícios com FlatList otimizado
  * Exibe 10+ exercícios com navegação para detalhes
  */
-export default function ExercisesScreen() {
-  const router = useRouter();
-
+export default function ListScreen({ navigation }) {
   /**
    * Callback para infinite scroll (scroll infinito)
    * Chamado quando o usuário chega ao final da lista
@@ -24,7 +21,7 @@ export default function ExercisesScreen() {
    * Otimizado com useCallback para melhor performance
    */
   const renderItem = useCallback(
-    ({ item }: { item: any }) => (
+    ({ item }) => (
       <ExerciseCard
         id={item.id}
         name={item.name}
