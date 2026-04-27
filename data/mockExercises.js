@@ -1,6 +1,6 @@
 /**
- * Base de dados mockada de exercícios para o app Treino-Tracker
- * Contém 10 exercícios diferentes com informações de musculatura, dificuldade e imagens GIF
+ * base de dados mockada de exercícios
+ * contem 10 exercícios diferentes com informações de musculatura, dificuldade e imagens
  */
 
 export const EXERCISES = [

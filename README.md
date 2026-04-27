@@ -4,18 +4,18 @@ Aplicativo mobile para rastreamento de exercícios e treinos, desenvolvido com R
 
 ## Funcionalidades
 
-- Navegação entre telas com expo-router
+- Navegação entre telas com React Navigation
 - Lista otimizada de exercícios com FlatList
-- Histórico de treinos com cards visuais
-- Perfil do usuário com metas e progresso
 - Detalhes de exercícios com GIFs animados
+- Perfil do usuário com metas e progresso
+- Interface responsiva e intuitiva
 
 ## Tecnologias
 
-- Expo
+- Expo SDK 55
 - React Native
-- Expo Router
-- TypeScript
+- React Navigation (Stack Navigator)
+- JavaScript
 - Lucide React Native
 
 ## Instalação
@@ -30,33 +30,35 @@ npm install
 npx expo start
 ```
 
+Escaneie o QR code com o Expo Go no seu dispositivo móvel.
+
 ## Estrutura do Projeto
 
 ```
-src/
-├── app/
-│   ├── _layout.tsx          # Layout principal com Stack Navigator
-│   ├── (tabs)/
-│   │   ├── _layout.tsx      # Tab Navigator com 4 abas
-│   │   ├── index.tsx        # Tela Inicial
-│   │   ├── exercises.tsx    # Listagem de exercícios
-│   │   ├── history.tsx      # Histórico de treinos
-│   │   └── profile.tsx      # Perfil do usuário
-│   └── exercise/
-│       └── [id].tsx         # Detalhes do exercício
+/
+├── App.js                    # Arquivo principal com navegação
+├── screens/
+│   ├── HomeScreen.js         # Tela inicial com categorias
+│   ├── ListScreen.js         # Listagem de exercícios
+│   ├── DetailScreen.js       # Detalhes do exercício
+│   └── ProfileScreen.js      # Perfil do usuário
 ├── components/
-│   ├── exercise-card.tsx    # Card de exercício
-│   └── history-card.tsx     # Card de histórico
+│   ├── Cards.js      # Card de exercício reutilizável
+│   ├── Button.js             # Componente botão
+│   └── external-link.js      # Link externo
 ├── constants/
-│   └── theme.ts             # Configurações de tema
+│   └── theme.js              # Constantes de tema
 ├── data/
-│   └── mockExercises.ts     # Dados dos exercícios
-└── hooks/
-    └── use-color-scheme.ts  # Hook para tema
-
-assets/
-└── images/                  # GIFs dos exercícios e ícone
+│   ├── mockExercises.js      # Dados mockados de exercícios
+│   └── exercises.js          # Dados de exercícios
+├── hooks/
+│   ├── use-color-scheme.js   # Hook para esquema de cores
+│   └── use-theme.js          # Hook para tema
+└── assets/
+    └── images/               # Imagens e ícones do app
 ```
+
+
 
 ## Paleta de Cores
 
@@ -67,3 +69,4 @@ assets/
 ## Autor
 
 André Kuniscki Monteiro de Albuquerque Júnior - Matrícula: 01406148
+

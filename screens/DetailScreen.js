@@ -38,8 +38,8 @@ export default function DetailScreen({ route, navigation }) {
       },
       {
         text: "Ver Treino",
-        onPress: () => navigation.navigate("ListScreen"),
-        style: "default",
+        onPress: () => navigation.navigate("MainTabs", { screen: "ListScreen" })
+      
       },
     ]);
   };

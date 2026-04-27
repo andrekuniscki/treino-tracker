@@ -1,25 +1,14 @@
 import React, { useCallback } from "react";
 import { FlatList, StatusBar, StyleSheet, View } from "react-native";
-import { ExerciseCard } from "../components/exercise-card";
+import { ExerciseCard } from "../components/Cards.js";
 import { EXERCISES } from "../data/mockExercises";
 
-/**
- * Tela de listagem de exercícios com FlatList otimizado
- * Exibe 10+ exercícios com navegação para detalhes
- */
 export default function ListScreen({ navigation }) {
-  /**
-   * Callback para infinite scroll (scroll infinito)
-   * Chamado quando o usuário chega ao final da lista
-   */
+  
   const handleLoadMore = useCallback(() => {
-    console.log("Reached end of list, load more data here...");
+    console.log("Fim da lista alcançado, carregar mais...");
   }, []);
 
-  /**
-   * Renderiza cada item da lista usando o componente reutilizável
-   * Otimizado com useCallback para melhor performance
-   */
   const renderItem = useCallback(
     ({ item }) => (
       <ExerciseCard
@@ -28,17 +17,18 @@ export default function ListScreen({ navigation }) {
         muscle={item.muscle}
         difficulty={item.difficulty}
         image={item.image}
+        onPress={() => navigation.navigate("DetailScreen", item)} 
       />
     ),
-    [],
+    [navigation]
   );
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="dark-content" />
       <FlatList
         data={EXERCISES}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
         contentContainerStyle={styles.listPadding}
         onEndReached={handleLoadMore}
@@ -57,6 +47,6 @@ const styles = StyleSheet.create({
   },
   listPadding: {
     padding: 12,
-    paddingBottom: 100,
+    paddingBottom: 20,
   },
 });

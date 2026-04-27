@@ -1,21 +1,19 @@
+import React from "react";
 import {
-    Alert,
-    Image,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native"; 
 
-export default function Card({ id, name, muscle, difficulty, image, onPress }) {
+export function ExerciseCard({ id, name, muscle, difficulty, image }) {
+  const navigation = useNavigation();
+
   const handlePress = () => {
-    if (onPress) {
-      try {
-        onPress(id, name, muscle, difficulty);
-      } catch (error) {
-        Alert.alert("Erro", "Não foi possível abrir os detalhes do exercício");
-      }
-    }
+    navigation.navigate("DetailScreen", { id, name, muscle, difficulty, image });
   };
 
   return (
@@ -48,10 +46,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#e0e0e0",
     elevation: 2,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
+    ...Platform.select({
+      web: { boxShadow: "0px 2px 3px rgba(0, 0, 0, 0.05)" },
+      default: {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 3,
+      },
+    }),
   },
   cardContent: {
     padding: 14,
@@ -71,17 +74,12 @@ const styles = StyleSheet.create({
     height: "100%",
     resizeMode: "cover",
   },
-  textContainer: {
-    flex: 1,
-  },
+  textContainer: { flex: 1 },
   exerciseName: {
     color: "#323131",
     fontSize: 16,
     fontWeight: "700",
     marginBottom: 6,
   },
-  muscleGroup: {
-    color: "#666",
-    fontSize: 13,
-  },
+  muscleGroup: { color: "#666", fontSize: 13 },
 });

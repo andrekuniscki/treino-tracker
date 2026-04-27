@@ -1,8 +1,7 @@
-import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, Platform, StyleSheet, Text, View } from "react-native";
 
 /**
- * Mapeia nomes de exercícios para seus respectivos GIFs
+ * mapeia nomes de exercícios pra seus respectivos gifs
  */
 const getExerciseGif = (exerciseName) => {
   const gifMap = {
@@ -18,15 +17,15 @@ const getExerciseGif = (exerciseName) => {
     Ombro: require("../../assets/images/ombro.gif"),
   };
 
-  return gifMap[exerciseName] || require("../../assets/images/flexao.gif"); // fallback
+  return gifMap[exerciseName] || require("../../assets/images/flexao.gif");
 };
 
 /**
- * Componente reutilizável para exibir um card de histórico de treino
- * @param props - Dados do treino
+ * componente reutilizável para exibir um card de histórico de treino
+ * @param props - dados do treino
  */
 export function HistoryCard({ date, exercises, duration }) {
-  // Pega o primeiro exercício para mostrar o GIF
+  // pega o primeiro exercício pra mostrar o gif
   const primaryExercise = exercises[0];
   const exerciseGif = getExerciseGif(primaryExercise);
 
@@ -59,10 +58,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#e0e0e0",
     elevation: 2,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
+    // web: usar boxShadow em vez de shadow*
+    ...Platform.select({
+      web: {
+        boxShadow: "0px 2px 3px rgba(0, 0, 0, 0.05)",
+      },
+      default: {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 3,
+      },
+    }),
   },
   cardContent: {
     padding: 12,

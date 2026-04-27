@@ -1,22 +1,23 @@
 import { Calendar, Dumbbell, Play, Target } from "lucide-react-native";
 import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 
 export default function HomeScreen({ navigation }) {
   const categories = [
     { id: "1", name: "Treino Completo", icon: Dumbbell, screen: "ListScreen" },
     { id: "2", name: "Metas", icon: Target, screen: "ProfileScreen" },
-    { id: "3", name: "Histórico", icon: Calendar, screen: "ProfileScreen" }, // Ajustar se houver tela de histórico
+    { id: "3", name: "Histórico", icon: Calendar, screen: "ProfileScreen" }, // ajustar se houver tela de histórico
   ];
 
   return (
     <ScrollView style={styles.container}>
-      {/* Clean white header section */}
+      {}
       <View style={styles.header}>
         <Text style={styles.brand}>
           TREINO<Text style={styles.highlight}>TRACKER</Text>
@@ -113,10 +114,17 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: "center",
     marginBottom: 12,
-    shadowColor: "#000",
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
     elevation: 2,
+    ...Platform.select({
+      web: {
+        boxShadow: "0px 2px 3px rgba(0, 0, 0, 0.05)",
+      },
+      default: {
+        shadowColor: "#000",
+        shadowOpacity: 0.05,
+        shadowRadius: 3,
+      },
+    }),
   },
   categoryText: {
     fontSize: 14,

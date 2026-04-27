@@ -1,9 +1,4 @@
-import {
-    ScrollView,
-    StyleSheet,
-    Text,
-    View
-} from "react-native";
+import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import Button from "../components/Button";
 
 export default function ProfileScreen({ navigation }) {
@@ -104,15 +99,22 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     borderRadius: 16,
     padding: 20,
-    shadowColor: "#000",
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
     elevation: 3,
     width: "100%",
     maxWidth: 320,
     alignItems: "center",
     marginVertical: 16,
+    ...Platform.select({
+      web: {
+        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.05)",
+      },
+      default: {
+        shadowColor: "#000",
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
+        shadowOffset: { width: 0, height: 4 },
+      },
+    }),
   },
   avatarPlaceholder: {
     width: 80,
@@ -152,13 +154,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     borderRadius: 16,
     padding: 20,
-    shadowColor: "#000",
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
     elevation: 3,
     width: "100%",
     maxWidth: 320,
+    ...Platform.select({
+      web: {
+        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.05)",
+      },
+      default: {
+        shadowColor: "#000",
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
+        shadowOffset: { width: 0, height: 4 },
+      },
+    }),
   },
   sectionTitle: {
     fontSize: 18,

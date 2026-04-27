@@ -1,4 +1,4 @@
-const EXERCISES = [
+export const EXERCISES = [
   {
     id: "1",
     name: "Flexão",
@@ -70,5 +70,3 @@ const EXERCISES = [
     difficulty: "Intermediário",
   },
 ];
-
-module.exports = { EXERCISES };
